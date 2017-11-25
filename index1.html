@@ -1,0 +1,127 @@
+
+<!DOCTYPE HTML>
+<html>
+  
+  <head>
+    <script type="text/javascript">
+      // Global variables
+      var ballX = 150; // Ball x position.
+      var ballY = 150; // Ball y position.
+      var ballDX = 2; // Change in ball x position.
+      var ballDY = 4; // Change in ball y position.
+      var boardX = 500; // Board width.
+      var boardY = 500; // Board height.
+      var paddleX = 250; // Initial paddle location.
+      var paddleH = 10; // Paddle height.
+      var paddleD = boardY - paddleH; // Paddle depth.
+      var paddleW = 150; // Paddle width.
+      var gameTime = 0;
+      var timeBack = 0;
+      var score = 0;
+    
+      
+
+      function drawGameSVG() {
+
+        // Play the game until the ball stops.
+        gameLoop = setInterval(drawBall, 16);
+
+        // Add keyboard listener.
+        window.addEventListener('keydown', whatKey, true);
+        window.addEventListener('keydown', speed, true);
+        window.addEventListener('keydown', canvasScore, true);
+      }
+    
+      function drawBall() {
+
+
+        // Change the ball location.
+        ballX += ballDX;
+        ballY += ballDY;
+        ball.setAttribute("cx", ballX);
+        ball.setAttribute("cy", ballY);
+        gameTime += 1;
+        if (gameTime - timeBack == 500) {
+          if (ballDY < 0) {
+            ballDY -= 1
+          } else {
+            ballDY += 1
+          }
+          if (ballDX < 0) {
+            ballDX -= 1
+          } else {
+            ballDX += 1
+          }
+          if (gameTime - timeBack == 100){
+          score += 10
+        }
+          timeBack = gameTime
+        }
+        
+        // Bounce on a left or right edge.
+        if (ballX + ballDX > boardX - 15 || ballX + ballDX < 15) {ballDX = - ballDX;}
+
+        // If ball hits the top, bounce it. 
+        if (ballY + ballDY < 15) {ballDY = - ballDY;}
+        // If the ball hits the bottom, check see if it hits a paddle.
+        else if (ballY + ballDY > boardY - 15) {
+          // If the ball hits the paddle, bounce it.
+          if (ballX > paddleX && ballX < paddleX + paddleW) {ballDY = -ballDY;}
+          // Otherwise the game is over.
+          else {
+            clearInterval(gameLoop);
+            alert("Game over!");
+          }
+        }
+       
+
+      }
+
+      // Get key press.
+
+      function whatKey(evt) {
+
+        switch (evt.keyCode) {
+          // Left arrow.
+        case 37:
+          paddleX = paddleX - 20;
+          if (paddleX < 0) paddleX = 0;
+          paddle.setAttribute("x", paddleX);
+          break;
+
+          // Right arrow.
+        case 39:
+          paddleX = paddleX + 20;
+          if (paddleX > boardX - paddleW) paddleX = boardX - paddleW;
+          paddle.setAttribute("x", paddleX);
+          break;
+        }
+      }
+
+
+       </script>
+  </head>
+  
+  <body onload="drawGameSVG()">
+    <center>
+    <h1>
+      Game three
+    </h1>
+    
+    <!-- Create the SVG pane. -->
+    <svg height="500" width="500">
+      <!-- Create the board. -->
+      <rect x="1" y="1" width="498" height="498" fill="thistle" id="bpard" />
+      <!-- Create the ball. -->
+      <circle cx="250" cy="250" r="15" fill="tomato" id="ball" />
+      <!-- Create the paddle. -->
+      <rect x="250" y="490" width="150" height="10" fill="navy" id="paddle"/>
+      
+    </svg>
+
+    <div>Score: <output name = "score"> score</output></div>
+   
+  </body>
+
+</html>
+
