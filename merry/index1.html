@@ -2,7 +2,9 @@
 <!DOCTYPE HTML>
 <html>
   
-  <head>
+  <head> 
+    <title>One game</title>
+
     <script type="text/javascript">
       // Global variables
       var ballX = 150; // Ball x position.
@@ -52,12 +54,10 @@
           } else {
             ballDX += 1
           }
-          if (gameTime - timeBack == 100){
-          score += 10
-        }
+          
           timeBack = gameTime
         }
-        
+     
         // Bounce on a left or right edge.
         if (ballX + ballDX > boardX - 15 || ballX + ballDX < 15) {ballDX = - ballDX;}
 
@@ -76,6 +76,8 @@
        
 
       }
+
+
 
       // Get key press.
 
@@ -102,7 +104,7 @@
        </script>
   </head>
   
-  <body onload="drawGameSVG()">
+  <body onload="drawGameSVG()"  background ="images/4.jpg">
     <center>
     <h1>
       Game three
@@ -119,7 +121,7 @@
       
     </svg>
 
-    <div>Score: <output name = "score"> score</output></div>
+    <p>Score: <span id="score">0</span></p>
    
   </body>
 
